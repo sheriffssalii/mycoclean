@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MycoWood System | Enactus Shorouk Academy</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="logo-container">
+            <img src="./Enactus elshorouk academy logo white.png" alt="Enactus Shorouk Academy Logo" class="logo">
+        </div>
+        <ul class="nav-links">
+            <li class="active" onclick="switchTab('dashboard')"><i class="fa-solid fa-chart-line"></i> Dashboard</li>
+            <li onclick="switchTab('logs')"><i class="fa-solid fa-table"></i> System Logs</li>
+            <li onclick="switchTab('about')"><i class="fa-solid fa-seedling"></i> About MycoWood</li>
+        </ul>
+        <div class="system-status">
+            <p>System Status: <span class="status-indicator online">Live Server</span></p>
+        </div>
+    </nav>
+
+    <main class="content">
+        
+        <section id="dashboard" class="view active-view">
+            <header class="top-bar">
+                <div>
+                    <h1>System Dashboard</h1>
+                    <p class="subtitle">Real-time Environmental Monitoring</p>
+                </div>
+                <div class="controls">
+                    <div class="current-mode">
+                        Mode: <span id="modeDisplay" class="mode-badge colonization">COLONIZATION</span>
+                    </div>
+                    <div class="current-status">
+                        System: <span id="alarmDisplay" class="mode-badge fruiting">STABLE</span>
+                    </div>
+                    <button class="btn btn-primary" id="btnMode"><i class="fa-solid fa-rotate"></i> Change Mode</button>
+                    <button class="btn btn-warning" id="btnMute"><i class="fa-solid fa-volume-xmark"></i> Mute Buzzer</button>
+                    <button class="btn btn-danger" id="btnRestart"><i class="fa-solid fa-power-off"></i> Restart</button>
+                </div>
+            </header>
+
+            <div class="cards-container">
+                <div class="card" id="tempCard">
+                    <div class="card-icon temp"><i class="fa-solid fa-temperature-half"></i></div>
+                    <div class="card-info">
+                        <h3>Temperature</h3>
+                        <h2 id="tempValue">-- °C</h2>
+                    </div>
+                </div>
+                <div class="card" id="humCard">
+                    <div class="card-icon hum"><i class="fa-solid fa-droplet"></i></div>
+                    <div class="card-info">
+                        <h3>Air Humidity</h3>
+                        <h2 id="humValue">-- %</h2>
+                    </div>
+                </div>
+                <div class="card" id="soilCard">
+                    <div class="card-icon soil"><i class="fa-solid fa-leaf"></i></div>
+                    <div class="card-info">
+                        <h3>Substrate Moisture</h3>
+                        <h2 id="soilValue">-- %</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="graph-container card">
+                <div class="graph-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 15px;">
+                    <h3>Environment Trends</h3>
+                    <div class="graph-filters" style="display: flex; gap: 10px;">
+                        <button class="btn btn-warning" onclick="setGraphView('all')">All</button>
+                        <button class="btn btn-warning" style="color: #ff4757; border-color: #ff4757;" onclick="setGraphView('temp')">Temp</button>
+                        <button class="btn btn-warning" style="color: #3742fa; border-color: #3742fa;" onclick="setGraphView('hum')">Humidity</button>
+                        <button class="btn btn-warning" style="color: #2ed573; border-color: #2ed573;" onclick="setGraphView('soil')">Soil</button>
+                    </div>
+                </div>
+                <div style="position: relative; height: 320px; width: 100%;">
+                    <canvas id="mycoChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="logs" class="view">
+            <header class="top-bar">
+                <div>
+                    <h1>System Logs</h1>
+                    <p class="subtitle">Historical Environmental Data</p>
+                </div>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="loadLogs()"><i class="fa-solid fa-arrows-rotate"></i> Refresh Data</button>
+                </div>
+            </header>
+
+            <div class="card table-container">
+                <table id="logsTable">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Phase</th>
+                            <th>Temp (°C)</th>
+                            <th>Humidity (%)</th>
+                            <th>Soil (%)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="about" class="view">
+            <header class="top-bar">
+                <div>
+                    <h1>About MycoWood</h1>
+                    <p class="subtitle">Innovating Agriculture & Sustainability</p>
+                </div>
+            </header>
+            
+            <div class="about-stack">
+                <div class="about-card">
+                    <div class="about-icon"><i class="fa-solid fa-microchip"></i></div>
+                    <div class="about-text">
+                        <h2>Project Overview</h2>
+                        <p>MycoWood is an automated agricultural system engineered by the Enactus team. The system relies on precise environmental control using microcontrollers to manage the sensitive growth stages of mushroom cultivation.</p>
+                    </div>
+                </div>
+
+                <div class="about-card">
+                    <div class="about-icon"><i class="fa-solid fa-lemon"></i></div>
+                    <div class="about-text">
+                        <h2>Primary Objective</h2>
+                        <p>The core focus of MycoWood is the optimized production of the mushroom fruit body itself. By strictly controlling temperature, humidity, and substrate moisture across the incubation and fruiting phases, we maximize the actual crop yield.</p>
+                    </div>
+                </div>
+
+                <div class="about-card">
+                    <div class="about-icon"><i class="fa-solid fa-recycle"></i></div>
+                    <div class="about-text">
+                        <h2>Secondary Application</h2>
+                        <p>As a secondary benefit, the project also explores the potential of the mycelium network. Once the primary fruit is harvested, this network can potentially be utilized to create sustainable, eco-friendly material alternatives.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
